@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2021-03-24T20:46:35Z</date>
+    <groups>
+        <group>
+            <name>Templates</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Raspberry Pi</template>
+            <name>Raspberry Pi</name>
+            <groups>
+                <group>
+                    <name>Templates</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>CPU</name>
+                </application>
+                <application>
+                    <name>GPU</name>
+                </application>
+                <application>
+                    <name>SD Card</name>
+                </application>
+            </applications>
+            <items>
+                <item>
+                    <name>CPU clock (MHz)</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>rpi.cpuClock</key>
+                    <history>1w</history>
+                    <applications>
+                        <application>
+                            <name>CPU</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>MULTIPLIER</type>
+                            <params>0.000001</params>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <name>CPU temperature</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>rpi.cpuTemperature</key>
+                    <history>1w</history>
+                    <units>°C</units>
+                    <applications>
+                        <application>
+                            <name>CPU</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>MULTIPLIER</type>
+                            <params>0.001</params>
+                        </step>
+                    </preprocessing>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&gt;=70</expression>
+                            <name>CPU temperature is high</name>
+                            <priority>WARNING</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>CPU throttled</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>rpi.cpuThrottled</key>
+                    <history>1w</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>CPU</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{iregexp(&quot;\b(0x0)\b&quot;)}=0</expression>
+                            <recovery_mode>RECOVERY_EXPRESSION</recovery_mode>
+                            <recovery_expression>{iregexp(&quot;\b(0x0)\b&quot;)}=1</recovery_expression>
+                            <name>CPU is throttling</name>
+                            <priority>WARNING</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>CPU voltage</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>rpi.cpuVoltage</key>
+                    <history>1w</history>
+                    <value_type>FLOAT</value_type>
+                    <applications>
+                        <application>
+                            <name>CPU</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>GPU temperature</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>rpi.gpuTemperature</key>
+                    <history>1w</history>
+                    <value_type>FLOAT</value_type>
+                    <units>°C</units>
+                    <applications>
+                        <application>
+                            <name>GPU</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&gt;=70</expression>
+                            <name>GPU temperature is high</name>
+                            <priority>WARNING</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>SD card Free</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>rpi.sdcardFree</key>
+                    <units>GB</units>
+                    <applications>
+                        <application>
+                            <name>SD Card</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>MULTIPLIER</type>
+                            <params>0.000000001</params>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <name>SD card Size</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>rpi.sdcardTotal</key>
+                    <units>GB</units>
+                    <applications>
+                        <application>
+                            <name>SD Card</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>MULTIPLIER</type>
+                            <params>0.000000001</params>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <name>SD card Used</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>rpi.sdcardUsed</key>
+                    <units>GB</units>
+                    <applications>
+                        <application>
+                            <name>SD Card</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>MULTIPLIER</type>
+                            <params>0.000000001</params>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <name>SD card Used Percent</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>rpi.sdcardUsedPercentage</key>
+                    <units>%</units>
+                    <applications>
+                        <application>
+                            <name>SD Card</name>
+                        </application>
+                    </applications>
+                </item>
+            </items>
+        </template>
+    </templates>
+    <graphs>
+        <graph>
+            <name>CPU Temperature</name>
+            <graph_items>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <color>199C0D</color>
+                    <item>
+                        <host>Raspberry Pi</host>
+                        <key>rpi.cpuTemperature</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>2</sortorder>
+                    <color>F63100</color>
+                    <item>
+                        <host>Raspberry Pi</host>
+                        <key>rpi.gpuTemperature</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>SD card Free space</name>
+            <graph_items>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <color>199C0D</color>
+                    <item>
+                        <host>Raspberry Pi</host>
+                        <key>rpi.sdcardFree</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+    </graphs>
+</zabbix_export>
